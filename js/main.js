@@ -1,11 +1,9 @@
 //Selectors
 const form = document.getElementById('item-form');
-const formImput = document.querySelector('.form-input');
+const formInput = document.querySelector('.form-input');
 const formBtn = document.querySelector('.btn');
 const itemList = document.getElementById('item-list');
-
-//Create Button UI
-
+const removeBtn = document.querySelector("ul");
 
 
 //Global Functions
@@ -13,28 +11,36 @@ const createEleFunc = (element) => {
     return document.createElement(element);
 }
 
-const createDiv = createEleFunc('li');
-const createBtnEle = createEleFunc('button');
-const createIconEle = createEleFunc('i');
-
-const itemBtn = (item) => {
-    //add class to createBtnEle
-    createBtnEle.classList.add("remove-item", "btn-link", "text-red");
-    createIconEle.classList.add("fa-solid", "fa-xmark");
-    createDiv.appendChild(document.createTextNode(item))
-    createBtnEle.appendChild(createIconEle);
-    createDiv.appendChild(createBtnEle);
-    itemList.appendChild(createDiv);
+const addItemBtn = (item) => {
+    //Creates "li" element attaches item name
+    const listItemElement = createEleFunc('li');
+    listItemElement.textContent = item;
+  
+    const buttonElement = createEleFunc('button');
+    buttonElement.classList.add('remove-item', 'btn-link', 'text-red');
+  
+    const removeIconElement = createEleFunc('i');
+    removeIconElement.classList.add('fa-solid', 'fa-xmark');
+    buttonElement.appendChild(removeIconElement);
+  
+    listItemElement.appendChild(buttonElement);
+    itemList.appendChild(listItemElement);
 }
-
-itemBtn('beer');
 
 
 //Event Listeners
+let itemContent;
+formInput.addEventListener("change", (e) => {
+    itemContent = e.target.value
+})
+
 formBtn.addEventListener('click', (e) => {
     e.preventDefault();
-
-
-
-    
+    addItemBtn(itemContent);
 })
+
+removeBtn.addEventListener('click', (e) => {
+    if(e.target.tagName === 'I'){
+    e.target.parentElement.parentElement.remove()
+    }
+});
